@@ -1,1 +1,1 @@
-CONSUL_URL=localhost:8585 CONSUL_PATH=parcel/prism go run ./cmd/api/main.go 
+go run ./cmd/api/main.go

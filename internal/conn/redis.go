@@ -5,7 +5,7 @@ import (
 
 	"github.com/go-redis/redis/v8"
 	"go.uber.org/zap"
-	"magic.pathao.com/parcel/prism/internal/config"
+	"pantho/golang/internal/config"
 )
 
 func ConnectRedis(cfg *config.Config, log *zap.Logger) (*redis.Client, error) {

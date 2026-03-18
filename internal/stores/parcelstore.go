@@ -2,7 +2,7 @@ package stores
 
 import (
 	"gorm.io/gorm"
-	"magic.pathao.com/parcel/prism/internal/models"
+	"pantho/golang/internal/models"
 )
 
 type ParcelStore interface {

@@ -8,7 +8,6 @@ import (
 	"time"
 
 	"go.uber.org/zap"
-	"magic.pathao.com/parcel/prism/internal/monitoring/beatbox"
 )
 
 type HttpProvider interface {
@@ -20,10 +19,9 @@ type HttpProvider interface {
 }
 type httpProvider struct {
 	log     *zap.Logger
-	beatbox *beatbox.BeatBox
 }
 
-func NewHttpProvider(logger *zap.Logger, beatbox *beatbox.BeatBox) HttpProvider {
+func NewHttpProvider(logger *zap.Logger) HttpProvider {
 	return &httpProvider{
 		log: logger,
 	}
@@ -35,7 +33,7 @@ func (s *httpProvider) makeRequest(method string, fullUrl string, headers map[st
 	var resp *http.Response
 
 	path := fullUrl
-	parsedURL, parseErr := url.Parse(fullUrl)
+	parsedURL, parseErr := url.Parse(path)
 	if parseErr != nil {
 		s.log.Error("failed to parse url", zap.Error(parseErr))
 	} else {
@@ -43,7 +41,7 @@ func (s *httpProvider) makeRequest(method string, fullUrl string, headers map[st
 	}
 
 	for attempt := 1; attempt <= maxRetry; attempt++ {
-		then := time.Now()
+		// then := time.Now()
 		client := &http.Client{}
 		client.Timeout = time.Duration(timeout) * time.Millisecond
 
@@ -66,10 +64,6 @@ func (s *httpProvider) makeRequest(method string, fullUrl string, headers map[st
 		}
 
 		resp, parseErr = client.Do(req)
-		s.beatbox.TimeTakenInServiceCall(caller, path, parseErr == nil, then)
-		if resp != nil {
-			s.beatbox.StatusCodeCountInServiceCall(caller, path, resp.StatusCode)
-		}
 
 		if enforceOK && resp != nil && resp.StatusCode != http.StatusOK {
 			err := fmt.Errorf("status code: %d", resp.StatusCode)

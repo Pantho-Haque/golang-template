@@ -9,7 +9,7 @@ import (
 	"strings"
 	"time"
 
-	"magic.pathao.com/parcel/prism/internal/cnst"
+	"pantho/golang/internal/cnst"
 )
 
 func SanitizePhoneNumber(number string) string {

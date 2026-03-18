@@ -11,10 +11,14 @@ type Config struct {
 	App      AppConfig
 	Postgres DatabaseConfig
 	Redis    RedisConfig
-	BeatBox  BeatBoxConfig
-	Sentry   SentryConfig
-	// DemoProvider DemoProviderConfig
 }
+
+func (c *Config) PrintConfig() {
+	fmt.Println("App: ", c.App)
+	fmt.Println("Postgres: ", c.Postgres)
+	fmt.Println("Redis: ", c.Redis)
+}
+
 
 func LoadConfig() (*Config, error) {
 	viper.BindEnv("consul_url")
@@ -47,30 +51,9 @@ func LoadConfig() (*Config, error) {
 		return nil, err
 	}
 
-	err = viper.UnmarshalKey("beatbox", &config.BeatBox)
-	if err != nil {
-		return nil, err
-	}
-
-	err = viper.UnmarshalKey("sentry", &config.Sentry)
-	if err != nil {
-		return nil, err
-	}
-
-	// err = viper.UnmarshalKey("demo_provider", &config.DemoProvider)
-	// if err != nil {
-	// 	return nil, err
-	// }
-
 	config.PrintConfig()
 
 	return config, nil
 }
 
-func (c *Config) PrintConfig() {
-	fmt.Println("App: ", c.App)
-	fmt.Println("Postgres: ", c.Postgres)
-	fmt.Println("Redis: ", c.Redis)
-	fmt.Println("BeatBox: ", c.BeatBox)
-	fmt.Println("Sentry: ", c.Sentry)
-}
+

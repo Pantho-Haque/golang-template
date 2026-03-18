@@ -2,7 +2,7 @@ package providers
 
 import (
 	"go.uber.org/zap"
-	"magic.pathao.com/parcel/prism/internal/config"
+	"pantho/golang/internal/config"
 )
 
 type DemoProvider interface {
@@ -10,14 +10,12 @@ type DemoProvider interface {
 }
 type demoProvider struct {
 	cfg         *config.Config
-	httpService *HttpProvider
 	log         *zap.Logger
 }
 
-func NewDemoProvider(cfg *config.Config, httpService *HttpProvider, log *zap.Logger) DemoProvider {
+func NewDemoProvider(cfg *config.Config, log *zap.Logger) DemoProvider {
 	return &demoProvider{
 		cfg:         cfg,
-		httpService: httpService,
 		log:         log,
 	}
 }

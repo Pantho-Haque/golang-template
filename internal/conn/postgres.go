@@ -7,7 +7,7 @@ import (
 	"go.uber.org/zap"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
-	"magic.pathao.com/parcel/prism/internal/config"
+	"pantho/golang/internal/config"
 )
 
 func ConnectPostgres(cfg *config.Config, log *zap.Logger) (*gorm.DB, error) {

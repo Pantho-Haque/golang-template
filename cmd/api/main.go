@@ -7,38 +7,41 @@ import (
 	"github.com/gin-gonic/gin"
 	"go.uber.org/fx"
 	"go.uber.org/zap"
-	"magic.pathao.com/parcel/prism/internal/api"
-	"magic.pathao.com/parcel/prism/internal/api/handlers"
-	"magic.pathao.com/parcel/prism/internal/config"
-	"magic.pathao.com/parcel/prism/internal/conn"
-	"magic.pathao.com/parcel/prism/internal/providers"
-	"magic.pathao.com/parcel/prism/internal/services"
-	"magic.pathao.com/parcel/prism/internal/stores"
-	"magic.pathao.com/parcel/prism/pkg"
+	"pantho/golang/internal/api"
+	"pantho/golang/internal/api/handlers"
+	// "pantho/golang/internal/config"
+	// "pantho/golang/internal/conn"
+	// "pantho/golang/internal/providers"
+	"pantho/golang/internal/services"
+	// "pantho/golang/internal/stores"
+	"pantho/golang/pkg"
 )
 
 func main() {
 	fx.New(
 		fx.Provide(
+			// dependencies
 			pkg.CustomLogger,
-			config.LoadConfig,
-			conn.ConnectPostgres,
-			conn.ConnectRedis,
-			conn.ConnectBeatbox,
+			// config.LoadConfig,
+
+			// connections
+			// conn.ConnectPostgres,
+			// conn.ConnectRedis,
+
+			// handlers
 			handlers.NewDemoHandler,
 
 			// services
 			services.NewPalantirService,
-			services.NewSherlockService,
 
 			// providers
-			providers.NewHttpProvider,
+			// providers.NewHttpProvider,
 			// providers.NewDemoProvider,
 
 			// stores
-			stores.NewCacheStore,
-			stores.NewParcelStore,
-			stores.NewUserStore,
+			// stores.NewCacheStore,
+			// stores.NewParcelStore,
+			// stores.NewUserStore,
 
 			GinHttpServer,
 			api.SetupRoutes,
@@ -47,17 +50,15 @@ func main() {
 			func(r *gin.RouterGroup, l *zap.Logger) {
 				l.Info("routes registered")
 			},
-			// InitSentry
-			conn.ConnectSentry,
 		),
 	).Run()
 }
 
-func GinHttpServer(lc fx.Lifecycle, cfg *config.Config, log *zap.Logger) *gin.Engine {
+func GinHttpServer(lc fx.Lifecycle, log *zap.Logger) *gin.Engine {
 	r := gin.Default()
 
 	srv := &http.Server{
-		Addr:    ":" + cfg.App.Port,
+		Addr:    ":" + "8080",
 		Handler: r,
 	}
 
