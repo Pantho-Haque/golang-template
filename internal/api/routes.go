@@ -5,8 +5,7 @@ import (
 	"pantho/golang/internal/api/handlers"
 )
 
-func SetupRoutes(r *gin.Engine, dh handlers.DemoHandler) *gin.RouterGroup {
-	r.Use(gin.Recovery())
+func SetupRoutes(r *gin.Engine, uh handlers.UserHandler) *gin.RouterGroup {
 
 	root := r.Group("/")
 	root.GET("healthz", func(c *gin.Context) {
@@ -15,7 +14,8 @@ func SetupRoutes(r *gin.Engine, dh handlers.DemoHandler) *gin.RouterGroup {
 
 	v1 := root.Group("v1")
 	{
-		v1.GET("/test", dh.Test)
+		v1.GET("/users", uh.GetUsers)
+
 	}
 
 	return root

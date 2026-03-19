@@ -9,11 +9,11 @@ import (
 	"go.uber.org/zap"
 	"pantho/golang/internal/api"
 	"pantho/golang/internal/api/handlers"
-	// "pantho/golang/internal/config"
-	// "pantho/golang/internal/conn"
-	// "pantho/golang/internal/providers"
 	"pantho/golang/internal/services"
-	// "pantho/golang/internal/stores"
+	"pantho/golang/internal/config"
+	"pantho/golang/internal/conn"
+	// "pantho/golang/internal/providers"
+	"pantho/golang/internal/stores"
 	"pantho/golang/pkg"
 )
 
@@ -22,17 +22,17 @@ func main() {
 		fx.Provide(
 			// dependencies
 			pkg.CustomLogger,
-			// config.LoadConfig,
+			config.LoadConfig,
 
 			// connections
-			// conn.ConnectPostgres,
+			conn.ConnectPostgres,
 			// conn.ConnectRedis,
 
 			// handlers
-			handlers.NewDemoHandler,
+			handlers.NewUserHandler,
 
 			// services
-			services.NewPalantirService,
+			services.NewUserService,
 
 			// providers
 			// providers.NewHttpProvider,
@@ -41,7 +41,7 @@ func main() {
 			// stores
 			// stores.NewCacheStore,
 			// stores.NewParcelStore,
-			// stores.NewUserStore,
+			stores.NewUserStore,
 
 			GinHttpServer,
 			api.SetupRoutes,
@@ -54,11 +54,11 @@ func main() {
 	).Run()
 }
 
-func GinHttpServer(lc fx.Lifecycle, log *zap.Logger) *gin.Engine {
+func GinHttpServer(lc fx.Lifecycle, log *zap.Logger, cfg *config.Config) *gin.Engine {
 	r := gin.Default()
 
 	srv := &http.Server{
-		Addr:    ":" + "8080",
+		Addr:    ":" + cfg.App.Port,
 		Handler: r,
 	}
 
