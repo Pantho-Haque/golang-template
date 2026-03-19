@@ -9,11 +9,6 @@ type UserStore struct {
 	db *gorm.DB
 }
 
-func NewUserStore(db *gorm.DB) *UserStore {
-	return &UserStore{db: db}
-}
-
-
 func (us *UserStore) GetFirstTenUsers() ([]models.User, error) {
 	var users []models.User
 	if err := us.db.Limit(10).Find(&users).Error; err != nil {

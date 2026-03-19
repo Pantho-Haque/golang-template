@@ -12,6 +12,7 @@ import (
 	"pantho/golang/internal/services"
 	"pantho/golang/internal/config"
 	"pantho/golang/internal/conn"
+	"pantho/golang/internal/core"
 	// "pantho/golang/internal/providers"
 	"pantho/golang/internal/stores"
 	"pantho/golang/pkg"
@@ -41,7 +42,10 @@ func main() {
 			// stores
 			// stores.NewCacheStore,
 			// stores.NewParcelStore,
-			stores.NewUserStore,
+			stores.NewStoreHolder,
+
+			// core
+			core.NewCtx,
 
 			GinHttpServer,
 			api.SetupRoutes,

@@ -1,36 +1,38 @@
 package handlers
 
 import (
+	"time"
+	"pantho/golang/internal/core"
+	"pantho/golang/pkg/utils"
+	userService "pantho/golang/internal/services/user"
+
 	"github.com/gin-gonic/gin"
-	"net/http"
 	"go.uber.org/zap"
-	"pantho/golang/internal/services"
 )
 
 type UserHandler interface {
 	GetUsers(c *gin.Context)
 }
 type userHandler struct {
-	userService *services.UserService
-	log *zap.Logger
+	ctx *core.Ctx
 }
 
-func NewUserHandler(
-	userService *services.UserService,
-	log *zap.Logger,
-) UserHandler {
+func NewUserHandler(ctx *core.Ctx) UserHandler {
 	return &userHandler{
-		userService: userService,
-		log: log,
+		ctx: ctx,
 	}
 }
 
 func (h *userHandler) GetUsers(c *gin.Context) {
-	users, err := h.userService.GetUsers()
-	if err != nil {
-		h.log.Error("failed to get users", zap.Error(err))
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to get users"})
+	ctx := h.ctx;
+	ctx.Now = time.Now()
+
+	resCtx := userService.ResponseCtx{}
+	if err := userService.New(&resCtx).Do(ctx, &core.DoCtx{}); err != nil {
+		h.ctx.Log.Error("error sharing parcel", zap.Error(err))
+		utils.ServeErr(c, err)
 		return
 	}
-	c.JSON(http.StatusOK, *users)
+
+	utils.ServeData(c, resCtx)
 }
