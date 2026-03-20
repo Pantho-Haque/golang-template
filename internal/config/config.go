@@ -2,7 +2,7 @@ package config
 
 import (
 	"fmt"
-
+	"time"
 	// "github.com/spf13/viper"
 	// _ "github.com/spf13/viper/remote"
 )
@@ -49,6 +49,7 @@ func LoadConfig() (*Config, error) {
 			Host: "localhost",
 			Port: 6379,
 			DB:   0,
+			TTL:  10 * time.Minute,
 		},
 	}
 	// err = viper.UnmarshalKey("app", &config.App)

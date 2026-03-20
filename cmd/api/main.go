@@ -9,10 +9,11 @@ import (
 	"go.uber.org/zap"
 	"pantho/golang/internal/api"
 	"pantho/golang/internal/api/handlers"
-	"pantho/golang/internal/services"
+	// "pantho/golang/internal/services"
 	"pantho/golang/internal/config"
 	"pantho/golang/internal/conn"
 	"pantho/golang/internal/core"
+	"pantho/golang/internal/cache"
 	// "pantho/golang/internal/providers"
 	"pantho/golang/internal/stores"
 	"pantho/golang/pkg"
@@ -20,27 +21,28 @@ import (
 
 func main() {
 	fx.New(
+		fx.Options(
+			conn.Module,
+		),
 		fx.Provide(
 			// dependencies
 			pkg.CustomLogger,
 			config.LoadConfig,
 
 			// connections
-			conn.ConnectPostgres,
-			// conn.ConnectRedis,
 
 			// handlers
 			handlers.NewUserHandler,
 
 			// services
-			services.NewUserService,
+			// services.NewUserService,
 
 			// providers
 			// providers.NewHttpProvider,
 			// providers.NewDemoProvider,
 
 			// stores
-			// stores.NewCacheStore,
+			cache.NewCacheStore,
 			// stores.NewParcelStore,
 			stores.NewStoreHolder,
 

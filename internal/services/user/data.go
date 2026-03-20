@@ -3,6 +3,6 @@ package userService
 import "pantho/golang/internal/models"
 
 type ResponseCtx struct {
-	Name string        `json:"name"`
+	Time string        `json:"time"`
 	Data []models.User `json:"data"`
 }

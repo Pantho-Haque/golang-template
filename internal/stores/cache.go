@@ -7,31 +7,17 @@ import (
 	"go.uber.org/zap"
 )
 
-type CacheStore interface {
-	keyBuilder(placeholder string, values ...interface{}) string
-	keyBuilderParcel(placeholder string, values ...interface{}) string
-}
-type cacheStore struct {
+type CacheStore struct {
 	cache *redis.Client
 	log   *zap.Logger
 }
 
 const (
-	PREFIX        = "prism:"
-	PREFIX_PARCEL = "parcels:"
+	PREFIX        = "template:"
 )
 
-func NewCacheStore(cache *redis.Client, log *zap.Logger) CacheStore {
-	return &cacheStore{
-		cache: cache,
-		log:   log,
-	}
-}
 
-func (cs *cacheStore) keyBuilder(placeholder string, values ...interface{}) string {
+func (cs *CacheStore) keyBuilder(placeholder string, values ...interface{}) string {
 	return fmt.Sprintf(PREFIX+placeholder, values...)
 }
 
-func (cs *cacheStore) keyBuilderParcel(placeholder string, values ...interface{}) string {
-	return fmt.Sprintf(PREFIX_PARCEL+placeholder, values...)
-}

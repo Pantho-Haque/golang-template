@@ -1,15 +1,17 @@
 package stores
 
-import "gorm.io/gorm"
+import (
+	"gorm.io/gorm"
+)
 
 type StoreHolder struct {
 	UserStore  *UserStore
-	CacheStore *CacheStore
+	// ← add
 }
 
 func NewStoreHolder(db *gorm.DB) *StoreHolder {
 	return &StoreHolder{
 		UserStore: &UserStore{db: db},
-		// cache: &CacheStore{},
+		// ← add
 	}
 }
