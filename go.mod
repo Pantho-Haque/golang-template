@@ -5,6 +5,7 @@ go 1.25
 require (
 	github.com/gin-gonic/gin v1.11.0
 	github.com/go-redis/redis/v8 v8.11.5
+	github.com/joho/godotenv v1.5.1
 	github.com/sirupsen/logrus v1.9.3
 	go.uber.org/fx v1.24.0
 	go.uber.org/zap v1.27.0
